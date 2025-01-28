@@ -6,12 +6,14 @@ import Button from "../components/Button";
 import { toast } from "sonner";
 import { useLoginMutation } from "../redux/slices/api/authApiSlice";
 import { setCredentials } from "../redux/slices/authSlice";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 const Login = () => {
   // const user=''
   const { user } = useSelector((state) => state.auth);
+
+  console.log("user",user)
   const {
     register,
     handleSubmit,
