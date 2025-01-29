@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { Chart } from "../components/Chart";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import UserInfo from "../components/UserInfo";
+import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
 
 const TaskTable = ({ tasks }) => {
   const ICONS = {
@@ -146,37 +147,47 @@ const UserTable = ({ users }) => {
   );
 };
 const Dashboard = () => {
-  const totals = summary.tasks;
+
+   const {data,isLoading} =useGetDashboardStatsQuery();
+   
+   console.log(data);
+
+   if(isLoading)
+   {
+    return <div>Loading...</div>
+   }
+
+   const totals=data?.task;
 
   const stats = [
     {
       _id: "1",
       label: "TOTAL TASK",
-      total: summary?.totalTasks || 0,
+      total: data?.totalTasks || 0,
       icon: <FaNewspaper />,
       bg: "bg-[#1d4ed8]",
     },
     {
       _id: "2",
       label: "COMPLTED TASK",
-      total: totals["completed"] || 0,
+      total: totals?.completed || 0,
       icon: <MdAdminPanelSettings />,
       bg: "bg-[#0f766e]",
     },
-    {
-      _id: "3",
-      label: "TASK IN PROGRESS ",
-      total: totals["in progress"] || 0,
-      icon: <LuClipboardEdit />,
-      bg: "bg-[#f59e0b]",
-    },
-    {
-      _id: "4",
-      label: "TODOS",
-      total: totals["todo"],
-      icon: <FaArrowsToDot />,
-      bg: "bg-[#be185d]" || 0,
-    },
+    // {
+    //   _id: "3",
+    //   label: "TASK IN PROGRESS ",
+    //   total: totals["in progress"] || 0,
+    //   icon: <LuClipboardEdit />,
+    //   bg: "bg-[#f59e0b]",
+    // },
+    // {
+    //   _id: "4",
+    //   label: "TODOS",
+    //   total: totals["todo"],
+    //   icon: <FaArrowsToDot />,
+    //   bg: "bg-[#be185d]" || 0,
+    // },
   ];
 
   const Card = ({ label, count, bg, icon }) => {
@@ -200,7 +211,7 @@ const Dashboard = () => {
     );
   };
   return (
-    <div classNamee='h-full py-4'>
+    <div className='h-full py-4'>
       <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
         {stats.map(({ icon, bg, label, total }, index) => (
           <Card key={index} icon={icon} bg={bg} label={label} count={total} />
@@ -211,7 +222,7 @@ const Dashboard = () => {
         <h4 className='text-xl text-gray-600 font-semibold'>
           Chart by Priority
         </h4>
-        <Chart />
+        <Chart  data={data.graphData}/>
       </div>
 
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>

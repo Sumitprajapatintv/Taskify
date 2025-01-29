@@ -20,14 +20,13 @@ const Users = () => {
 
   const {data,isLoading,refetch}=useGetTeamListQuery();
 
-  console.log(data);
-
   const userActionHandler = async () => {
     try {
         const result=await userAction({
-          isActive:!selected?.isActive,
+          isActive:!selected.isActive,
           id:selected?._id
         });
+        console.log('result',result);
         refetch();
         toast.success("Updaated");
         setSelected(null);
@@ -40,6 +39,7 @@ const Users = () => {
   };
   const deleteHandler = async () => {
     try {
+      console.log()
          const result=await deleteUser(selected)
          refetch();
          setSelected(null);
@@ -63,7 +63,7 @@ const Users = () => {
 
   const userStatusClick=(el)=>{
     setSelected(id);  
-    setOpenDialog(id);  
+    setOpenAction(true);  
   }
 
   const TableHeader = () => (
