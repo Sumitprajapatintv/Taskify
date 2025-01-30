@@ -18,6 +18,8 @@ const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 const uploadedFileURLs = [];
 
 const AddTask = ({ open, setOpen,task }) => {
+
+   console.log("dlksh,",task);
   // const task = "";
      const defaultValue={
        title:task?.title || "",
