@@ -12,7 +12,7 @@ const UserList = ({ setTeam, team }) => {
   // const data = summary.users;
   const [selectedUsers, setSelectedUsers] = useState([]);
 
-  const [data,{isLoading}]=useGetTeamListQuery();
+  // const [data,{isLoading}]=useGetTeamListQuery();
 
   const handleChange = (el) => {
     setSelectedUsers(el);

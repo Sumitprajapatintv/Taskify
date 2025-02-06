@@ -59,7 +59,7 @@ const NotificationPanel = () => {
 
    let { data, refetch } = useGetNotificationQuery();
 
-   console.log("data",data);
+   console.log("data in Notification Panel",data);
   //  data=data;
    const [markAsRead] = useMarkNotiAsReadMutation();
 

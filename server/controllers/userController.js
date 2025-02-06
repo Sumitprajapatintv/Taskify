@@ -2,6 +2,7 @@ import { response } from "express";
 import User from "../models/user.js";
 import { createJWT } from "../utils/index.js";
 import Notice from "../models/notification.js";
+import mongoose from "mongoose";
 
 export const registerUser = async (req, res) => {
   try {
@@ -110,21 +111,27 @@ export const getTeamList = async (req, res) => {
 
 export const getNotificationsList = async (req, res) => {
   try {
-    const { userId } = req.user;
-    console.log("userId", userId);
-    const notice = await Notice.find({
+    let { userId } = req.user;
+    console.log("Raw userId:", userId);
+
+    userId = new mongoose.Types.ObjectId(userId);
+    console.log("Converted userId:", userId);
+
+    const notices = await Notice.find({
       team: userId,
-      isRead: { $nin: [userId] },
+      $or: [{ isRead: { $exists: false } }, { isRead: { $nin: [userId] } }],
     }).populate("task", "title");
 
-    console.log("notice", notice);
+    console.log("Notices Found:", notices);
 
-    res.status(201).json(notice);
+    res.status(200).json(notices);
   } catch (error) {
-    console.log(error);
+    console.log("Error:", error);
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
+
 
 export const updateUserProfile = async (req, res) => {
   try {
